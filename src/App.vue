@@ -16,7 +16,9 @@
       </div>
     </div>
     <div class="content">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -32,22 +34,29 @@ export default {
 };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-.tab
-  display:flex
-  width:100%
-  height:40px
-  line-height:40px
-  .tab-item
-    flex:1
-    text-align:center
-    border-bottom:2px solid #fff
-    & > a
-      display:block
-      text-decoration:none
-      font-size:14px
-      color:rgb(77,85,93)
-      &.active
-        color:rgb(240,20,20)
-        border-bottom:2px solid rgb(240,20,20)
+<style lang="less" rel="stylesheet/less">
+@import "./assets/theme.less";
+
+.tab{
+  display: flex;
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+  background-color:#fff;
+  .tab-item{
+    flex: 1;
+    text-align: center;
+    border-bottom: 2px solid #fff;
+    >a{
+      display: block;
+      text-decoration: none;
+      font-size: 14px;
+      color:rgba(102,102,102,1);
+      &.active{
+        color:@primaryColor;
+        border-bottom: 2px solid rgb(240,20,20);
+      }
+    }
+  }
+}
 </style>

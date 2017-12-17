@@ -1,5 +1,6 @@
 <template>
   <div class="popular">
+  	时下流行
   </div>
 </template>
 
@@ -13,6 +14,6 @@ export default {
 };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="less" rel="stylesheet/less">
 
 </style>
