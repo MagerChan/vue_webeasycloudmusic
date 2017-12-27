@@ -12,6 +12,11 @@
         <mu-tab value="singers" title="热门歌手" />
       </mu-tabs>
     </div>
+    <div class="default-view" :class="{view: songList.length>0}">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </div>
   </div>
 </template>
 
@@ -50,7 +55,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'songslist'
+      'songList'
     ])
   }
 };
