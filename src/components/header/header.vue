@@ -12,7 +12,7 @@
         <mu-tab value="singers" title="热门歌手" />
       </mu-tabs>
     </div>
-    <div class="default-view" :class="{view: songList.length>0}">
+    <div class="default-view" :class="{view: songList.length > 0}">
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
@@ -83,9 +83,12 @@ export default {
       color:rgba(102,102,102,1);
     }
     >.mu-tab-active{
-      color:@primaryColor
+      color:@primaryColor;
     }
   }
+}
+.view{
+  margin-bottom:2.3rem;
 }
   
 

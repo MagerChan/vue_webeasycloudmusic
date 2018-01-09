@@ -86,7 +86,7 @@ const store = new Vuex.Store({
     },
     setLocation (state, location) {
       state.audio.location = location
-    }
+    },
     updateCurrentTime (state, time) {
       state.currentTime = time
     },
