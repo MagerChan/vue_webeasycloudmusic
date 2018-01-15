@@ -87,6 +87,10 @@ export default {
     }
   }
 }
+.default-view{
+  margin-top:104px;
+}
+
 .view{
   margin-bottom:2.3rem;
 }

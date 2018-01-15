@@ -55,33 +55,3 @@ export default new Router({
     }
   ]
 });
-
-/* export default new Router({
-  routes: [
-    {
-      path: '/popular',
-      name: 'popular',
-      component: popular
-    },
-    {
-      path: '/songslist',
-      name: 'songslist',
-      component: songslist
-    },
-    {
-      path: '/rating',
-      name: 'rating',
-      component: rating
-    },
-    {
-      path: '/singers',
-      name: 'singers',
-      component: singers
-    },
-    {
-      path: '*',
-      redirect: '/popular'
-    }
-  ],
-  linkActiveClass: 'active'
-}); */

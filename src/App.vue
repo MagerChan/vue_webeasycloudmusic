@@ -7,13 +7,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import header from './components/header/header';
-
 export default {
-  name: 'app',
-  components: {
-    'v-header': header
-  }
+  name: 'app'
 };
 </script>
 
