@@ -28,6 +28,32 @@
   					</router-link>
   				</mu-flexbox-item>
   			</mu-flexbox>
+  			<div class="g-title mv">
+  				推荐MV
+  				<router-link :to="{}">更多></router-link>
+  			</div>
+  			<mu-flexbox wrap="wrap" justify="space-around" class="box" :gutter="0">
+  				<mu-flexbox-item basis="40%" class="mv-item">
+  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
+					<div class="mv-name">Skin to sking</div>
+					<div ckass="mv-author">mager</div>
+  				</mu-flexbox-item>
+  				<mu-flexbox-item basis="40%" class="mv-item">
+  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
+					<div class="mv-name">Skin to sking</div>
+					<div ckass="mv-author">mager</div>
+  				</mu-flexbox-item>
+  				<mu-flexbox-item basis="40%" class="mv-item">
+  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
+					<div class="mv-name">Skin to sking</div>
+					<div ckass="mv-author">mager</div>
+  				</mu-flexbox-item>
+  				<mu-flexbox-item basis="40%" class="mv-item">
+  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
+					<div class="mv-name">Skin to sking</div>
+					<div ckass="mv-author">mager</div>
+  				</mu-flexbox-item>
+  			</mu-flexbox>
   		</div>
   	</div>
   </div>
@@ -196,6 +222,25 @@ export default {
 			-webkit-box-orient:vertical;
 			overflow:hidden;
 			font-size:12px;
+		}
+	}
+	.mv{
+		background:url("aee.png") no-repeat left center;
+		background-size:20px 20px;
+		&-name{
+			display:-webkit-box;
+			overflow:hidden;
+			text-overflow:ellipsis;
+			-webkit-line-clamp:1;
+			-webkit-box-orient:vertical;
+		}
+		&-item{
+			position:relative;
+			margin:0 5px 5px 10px;
+		}
+		&-author{
+			font-size:12px;
+			color:#666;
 		}
 	}
 }
