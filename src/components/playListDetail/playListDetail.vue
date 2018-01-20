@@ -28,7 +28,8 @@
   		</div>
   		<div class="playlist-holder">
   			<div class="add-all">
-  				<mu-flat-button label="播放全部" class="demo-flat-button" icon="add_circle_outline" @click="playAll"></mu-flat-button>
+  				<mu-flat-button label="播放全部" class="demo-flat-button" icon="add_circle_outline" @click="playAll"/>
+  				<mu-divider/>
   			</div>
   			<div>
   				<mu-circulat-progress :size="40" class="center" v-if="isloading"/>
