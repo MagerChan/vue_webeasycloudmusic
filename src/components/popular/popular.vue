@@ -81,7 +81,7 @@ export default {
           swiper.startAutoplay();
         }
       },
-      isloading: true,
+      isloading: false,
       playList: [],
       mvList: []
     };
@@ -212,7 +212,7 @@ export default {
 		}
 		&-img{
 			min-width:5rem;
-			min-heihgt:5rem;
+			min-height:5rem;
 		}
 		
 		&-name{
