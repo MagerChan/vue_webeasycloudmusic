@@ -60,10 +60,88 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { mapGetters, mapMutations } from 'vuex';
+import BottomSheet from '../list.vue';
+import api from '../../static/js/api.js;'
 export default {
   data () {
     return {
+      lyric: '',
+      afterLrc: [],
+      lrcIndex: 0
     };
+  },
+  components: {
+    BottomSheet
+  },
+  beforeRouterEnter: (to, from, next) => {
+    // 这里判断是否重复打开的同一个歌曲页面
+    next(vm => {
+      if (parseInt(to.params.id) !== parseInt(vm.audio.id)) {
+        console.log('vm: id' + vm.audio.id);
+        vm.loadLrc(vm.audio.id);
+      }
+    });
+  },
+  watch: {
+    audio (val) {
+      this.loadLrc(val.id);
+    }
+  },
+  methods: {
+    togglePlay () {
+      if (this.playing) {
+        this.$store.commit('pause');
+        document.getElementById('audioPlay').pause();
+      } else {
+        this.$store.commit('play');
+        document.getElementById('audioPlay').play();
+      }
+    },
+    back () {
+      this.$route.go(-1);
+      this.$store.commit('toggleDetail');
+    },
+    changeTime (value) { // 改变播放时间事件
+      var time = (value * this.durationTime) / 100;
+      this.$store.commit('changeTime', time);
+      this.$store.commit('setChange', true);
+    },
+    loadLrc (id) {
+      var self = this;
+      this.aterLrc = [{'txt': '正在加载中...'}];
+      if (!id) {
+        this.afterLrc = [{'text': '这里显示歌词哦！'}];
+        return;
+      }
+      this.$http.get(api.getLrc(id)).then((res) => {
+        // 1、先判断是否有歌词
+        if (res.data.nolyric) {
+          this.afterLrc = [{'txt': '(⊙０⊙) 暂无歌词'}];
+        } else {
+          this.lyric = res.data.lrc.lyric;
+          this.getLrc();
+        }
+      }, (res) = {
+        console.log('lrc fail');
+        this.afterLrc = [{'txt': '加载歌词失败'}]
+      })
+      .catch(function (error) {
+        console.log(error);
+        self.afterLrc = [{'txt': '(⊙０⊙) 暂无歌词'}];
+      });
+    },
+    getLrc () {
+      if (this.lyric) {
+        var lyrics = this.lyric.split('\n');
+        var lrcObj = [];
+        /* eslint-disable */
+        var timeReg = /\[\d*:\d*((\.|:)\d*)*\]/g;
+        /* eslint-enable */
+        // 思路： 1、把歌词进行处理以时间和歌词组成一个对象，当如afterLrc数组中
+        // 2、在computed方法中根据当前的时间进行匹配歌词，然后查找在数据中的位置计算offset值
+      }
+    }
   }
 };
 </script>
@@ -196,6 +274,94 @@ export default {
         }
       }
     }
+    .pro{
+      positon:relative;
+      .pro-wrap{
+        position:relative;
+        margin:0 2rem;
+        padding:1rem 0 0;
+        .song-slider{
+          margin-bottom:0;
+        }
+      }
+      .time{
+        position:absolute;
+        top:54%;
+        color:#fff;
+        font-size:12px;
+        opacity:.5;
+        #cur{
+          left:0;
+        }
+        #total{
+          right:0;
+        }
+      }
+    }
+    .control-bar{
+      .btn{
+        width:2.6rem;
+        height:2.6rem;
+      }
+      .d-mode{
+        background:url('./seq.png') no-repeat;
+        background-size:cover;
+      }
+      .d-prev{
+        backgrond:url('./prev.png') no-repeat;
+        background-size:cover;
+      }
+      .d-play{
+        background:url('./play.png') no-repeat;
+        background-size:cover;
+      }
+      .d-pause{
+        background:url('./pause.png') no-repeat;
+        background-size:cover;
+      }
+      .d-next{
+        background:url('./next.png') no-repeat;
+        background-size:cover;
+      }
+      .d-list{
+        background:url:('./list.png') no-repeat;
+        background-size:cover;
+      }
+    }
+  }
+}
+
+.mask{
+  position:absolute;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  left:0;
+  top:0;
+  z-index:1;
+  .album-cover{
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:2;
+    background-size:cover;
+    background-position:center;
+    filter:blur(1.2rem);
+    -webkit-filter:blur(1.2rem);
+    -webkit-transform:scale(1.05);
+  }
+  .cover-mask{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    bottom:0;
+    left:0;
+    z-index:3;
+    background-color:rgba(0,0,0,.8);
   }
 }
 
