@@ -61,8 +61,8 @@
 
 <script type="text/ecmascript-6">
 import { mapGetters, mapMutations } from 'vuex';
-import BottomSheet from '../list.vue';
-import api from '../../static/js/api.js;'
+import BottomSheet from '../list/list.vue';
+import api from '../../../static/js/api.js';
 export default {
   data () {
     return {
@@ -122,9 +122,9 @@ export default {
           this.lyric = res.data.lrc.lyric;
           this.getLrc();
         }
-      }, (res) = {
+      }, (res) => {
         console.log('lrc fail');
-        this.afterLrc = [{'txt': '加载歌词失败'}]
+        this.afterLrc = [{'txt': '加载歌词失败'}];
       })
       .catch(function (error) {
         console.log(error);
@@ -140,7 +140,69 @@ export default {
         /* eslint-enable */
         // 思路： 1、把歌词进行处理以时间和歌词组成一个对象，当如afterLrc数组中
         // 2、在computed方法中根据当前的时间进行匹配歌词，然后查找在数据中的位置计算offset值
+        for (var i = 0; i < lyrics.length; i++) {
+          var timeRegExpArr = lyrics[i].match(timeReg);
+          if (!timeRegExpArr) continue;
+          var txt = lyrics[i].replace(timeReg, '');
+          // 处理时间
+          for (var k = 0; k < timeRegExpArr.length; k++) {
+            var array = {};
+            var t = timeRegExpArr[k];
+            /*eslint-disable */
+            var min = Number(String(t.match(/\[\d*/i)).slice(1));
+            var sec = Number(String(t.match(/\:\d*/i)).slice(1));
+            /*eslint-enable */
+            var time = min * 60 + sec;
+            array.time = time;
+            array.txt = txt;
+            lrcObj.push(array);
+          }
+        }
+        this.afterLrc = lrcObj;
       }
+    },
+    showList () {
+      this.$refs.bottomSheet.show();
+    },
+    ...mapMutations([
+      'playNext',
+      'playPrev'
+    ])
+  },
+  computed: {
+    ...mapGetters([
+      'currentTime',
+      'bufferedTime',
+      'durationTime',
+      'prCurrentTime',
+      'audio',
+      'playing'
+    ]),
+    lrcOffset () {
+      if (this.afterLrc) {
+        // 1、根据时间获得歌词
+        var current = Math.round(this.currentTime);
+        // 2、根据时间得到歌词
+        for (var i = 0; i < this.afterLrc.length; i++) {
+          if (this.afterLrc[i].time === current) this.lrcIndex = i;
+        }
+        return -(this.lrcIndex) * 58;
+      }
+    }
+  },
+  filters: {
+    // 时间字符格式化
+    time (value) {
+      var length = Math.floor(parseInt(value));
+      var minute = Math.floor(value / 60);
+      if (minute < 10) {
+        minute = '0' + minute;
+      }
+      var second = length % 60;
+      if (second < 10) {
+        second = '0' + second;
+      }
+      return minute + ':' + second;
     }
   }
 };
@@ -192,7 +254,7 @@ export default {
       width:4rem;
       height:6rem;
       right:30%;
-      background:url('./stick_bg') no-repeat left -.4rem;
+      background:url('./stick_bg.png') no-repeat left -.4rem;
       background-size:cover;
       z-index:8;
       transition:all 300ms ease-in;
@@ -324,7 +386,7 @@ export default {
         background-size:cover;
       }
       .d-list{
-        background:url:('./list.png') no-repeat;
+        background:url('./list.png') no-repeat;
         background-size:cover;
       }
     }

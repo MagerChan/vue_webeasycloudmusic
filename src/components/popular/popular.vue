@@ -7,10 +7,7 @@
   	<div class="container" v-show="!isloading">
   		<div id="slider">
   			<swiper :options="swiperOption"  ref="mySwiper">
-  				<swiper-slide><img src="./banner1.jpg"></swiper-slide>
-  				<swiper-slide><img src="./banner2.jpg"></swiper-slide>
-  				<swiper-slide><img src="./banner3.jpg"></swiper-slide>
-  				<swiper-slide><img src="./banner4.jpg"></swiper-slide>
+  				<swiper-slide v-for="item in banner" :key="item.targetId"><img :src="item.pic"/></swiper-slide>
   				<div class="swiper-pagination" slot="pagination"></div>
   			</swiper>
   		</div>
@@ -21,9 +18,9 @@
   			</div>
   			<mu-flexbox wrap="wrap" justify="space-around" class="box" :gutter="0">
   				<mu-flexbox-item basis="28%" class="item" v-for="item in playList" :key="item.id">
-  					<router-link :to="{name: 'palyListDetail', params: {id: item.id, name: item.name, coverImg: item.coverImgUrl, creator: item.creator, count: itme.playCount, desc: item.description}}">
+  					<router-link :to="{name: 'playListDetail', params: {id: item.id, name: item.name, coverImg: item.coverImgUrl, creator: item.creator, count: item.playCount, desc: item.description}}">
   						<div class="bar">{{item.playCount | formatCount}}</div>
-  						<img class="item-img img-response" :src="itme.coverImgUrl + '?param=230y230'" lazy="loading">
+  						<img class="item-img img-response" :src="item.coverImgUrl + '?param=230y230'" lazy="loading">
   						<div class="item-name">{{item.name}}</div>
   					</router-link>
   				</mu-flexbox-item>
@@ -33,25 +30,10 @@
   				<router-link :to="{}">更多></router-link>
   			</div>
   			<mu-flexbox wrap="wrap" justify="space-around" class="box" :gutter="0">
-  				<mu-flexbox-item basis="40%" class="mv-item">
-  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
-					<div class="mv-name">Skin to sking</div>
-					<div ckass="mv-author">mager</div>
-  				</mu-flexbox-item>
-  				<mu-flexbox-item basis="40%" class="mv-item">
-  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
-					<div class="mv-name">Skin to sking</div>
-					<div ckass="mv-author">mager</div>
-  				</mu-flexbox-item>
-  				<mu-flexbox-item basis="40%" class="mv-item">
-  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
-					<div class="mv-name">Skin to sking</div>
-					<div ckass="mv-author">mager</div>
-  				</mu-flexbox-item>
-  				<mu-flexbox-item basis="40%" class="mv-item">
-  					<img class="img-response" src="http://p4.music.126.net/0r0H97s-bM0lZzs6x0Ibeg==/18685100604133296.jpg?param=300y170">
-					<div class="mv-name">Skin to sking</div>
-					<div ckass="mv-author">mager</div>
+  				<mu-flexbox-item v-for="item in RecommendMv" :key="item.id" basis="40%" class="mv-item">
+  					<img class="img-response" :src="item.picUrl">
+					<div class="mv-name">{{item.name}}</div>
+					<div class="mv-author">{{item.artistName}}</div>
   				</mu-flexbox-item>
   			</mu-flexbox>
   		</div>
@@ -81,13 +63,17 @@ export default {
           swiper.startAutoplay();
         }
       },
-      isloading: false,
+      isloading: true,
       playList: [],
-      mvList: []
+      mvList: [],
+      banner: [],
+      RecommendMv: []
     };
   },
-  create() {
+  created() {
     this.get();
+    this.getBanner();
+    this.getRecommendMv();
   },
   computed: {
     swiper() {
@@ -101,9 +87,19 @@ export default {
   },
   methods: {
     get() {
-      this.$http.get(api.getPlayListByWhere('全部', 'hot', 0, true, 6)).then((res) => {
+      this.$http.get(api.getPlayListByWhere('全部', 6)).then((res) => {
         this.isloading = false;
         this.playList = res.data.playlists;
+      });
+    },
+    getBanner() {
+      this.$http.get(api.getBanner()).then((res) => {
+        this.banner = res.data.banners;
+      });
+    },
+    getRecommendMv() {
+      this.$http.get(api.getRecommendMv()).then((res) => {
+        this.RecommendMv = res.data.result;
       });
     }
   },
@@ -173,75 +169,82 @@ export default {
 }
 .wrapper{
 	padding:0 5px;
-	.g-title{
-		height:35px;
-		line-height:35px;
-		padding-left:25px;
-		font-size:16px;
-		color:#333;
-		a{
-			float:right;
-			font-size:12px;
-			color:#666;
-		}
+}
+
+.img-response{
+	max-width:100%;
+	height:auto;
+}
+
+.g-title{
+	height:35px;
+	line-height:35px;
+	padding-left:25px;
+	font-size:16px;
+	color:#333;
+	a{
+		float:right;
+		font-size:12px;
+		color:#666;
 	}
-	.song-list{
-		background:url('./aei.png') no-repeat left center;
-		background-size:20px 20px;
+}
+.song-list{
+	background:url('./aei.png') no-repeat left center;
+	background-size:20px 20px;
+}
+.item{
+	position:relative;
+	margin:0 5px 5px 10px;
+	height:100%;
+	a{
+		color:rgba(0,0,0,0.87);
 	}
-	.item{
+	.bar{
+		position:absolute;
+		width:100%;
+		padding:2px 5px;
+		top:0;
+		left:0;
+		color:#fff;
+		text-align:right;
+		bakcground-color:rgba(0,0,0,.2)
+	}
+	&-img{
+		min-width:5rem;
+		min-height:5rem;
+	}
+	&-img[lazy=loading] {
+      background: url('./default_cover.png') no-repeat;
+      background-size: cover;
+    }
+	
+	&-name{
+		height:2.4rem;
+		font-size:12px;
+		text-overflow:ellipsis;
+		display:-webkit-box;
+		-webkit-line-clamp:2;
+		-webkit-box-orient:vertical;
+		overflow:hidden;
+	}
+}
+.mv{
+	background:url("aee.png") no-repeat left center;
+	background-size:20px 20px;
+	&-name{
+		display:-webkit-box;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		-webkit-line-clamp:1;
+		-webkit-box-orient:vertical;
+	}
+	&-item{
 		position:relative;
 		margin:0 5px 5px 10px;
-		height:100%;
-		a{
-			color:rgba(0,0,0,0.87);
-		}
-		.bar{
-			position:absolute;
-			width:100%;
-			padding:2px 5px;
-			top:0;
-			left:0;
-			color:#fff;
-			text-align:right;
-			bakcground-color:rgba(0,0,0,.2)
-		}
-		img-response{
-			max-width:100%;
-			height:auto;
-		}
-		&-img{
-			min-width:5rem;
-			min-height:5rem;
-		}
-		
-		&-name{
-			display:-webkit-box;
-			height:1.7rem;
-			-webkit-line-clamp:2;
-			-webkit-box-orient:vertical;
-			overflow:hidden;
-			font-size:12px;
-		}
 	}
-	.mv{
-		background:url("aee.png") no-repeat left center;
-		background-size:20px 20px;
-		&-name{
-			display:-webkit-box;
-			overflow:hidden;
-			text-overflow:ellipsis;
-			-webkit-line-clamp:1;
-			-webkit-box-orient:vertical;
-		}
-		&-item{
-			position:relative;
-			margin:0 5px 5px 10px;
-		}
-		&-author{
-			font-size:12px;
-			color:#666;
-		}
+	&-author{
+		font-size:12px;
+		color:#666;
 	}
 }
 </style>

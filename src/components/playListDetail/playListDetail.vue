@@ -32,7 +32,7 @@
   				<mu-divider/>
   			</div>
   			<div>
-  				<mu-circulat-progress :size="40" class="center" v-if="isloading"/>
+  				<mu-circular-progress :size="40" class="center" v-if="isloading"/>
   				<mu-list :value="value" v-show="!isloading" @change="change">
   					<div v-for="(item,index) in list" @click="playAudio(item)">
   						<mu-list-item :disableRipple="true" :title="item.name" :value="item.id" :describeText="item.ar[0].name">
@@ -179,14 +179,14 @@ export default {
 .playlist-info{
 	position:relative;
 	padding:60px .5rem 0;
-	height:10rem;
+	height:12rem;
 	.info-wrapper{
 		position:relative;
 		z-index:10;
 		color:#fff;
 		.info-gallery{
 			position:relative;
-			width:6rem;
+			width:8rem;
 			float:left;
 			overflow:hidden;
 			span{

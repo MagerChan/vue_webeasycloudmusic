@@ -4,10 +4,10 @@
   		<div class="content">
   			<div class="title">全部歌单</div>
   			<mu-flexbox wrap="wrap" justify="space-around" class="box" :gutter="0">
-  				<mu-flexbox-item basis="40%" class="list-item" :key="ite.id" v-for="item in playList">
+  				<mu-flexbox-item basis="40%" class="list-item" :key="item.id" v-for="item in playList">
   					<router-link :to="{name: 'playListDetail', params: {id: item.id, name: item.name, coverImg: item.coverImgUrl, creator: item.creator, count: item.playCount, desc: item.description}}">
   						<div class="list-bar">{{item.playCount | formatCount}}</div>
-  						<img class="list-img img-response" :src="item.coverImgUrl + '?para=300y300'" lazy="loading">
+  						<img class="img-response" :src="item.coverImgUrl + '?para=300y300'" lazy="loading">
   						<div class="list-name">{{item.name}}</div>
   					</router-link>
   				</mu-flexbox-item>
@@ -30,7 +30,7 @@ export default {
       loading: false
     };
   },
-  create () {
+  created () {
     this.get();
   },
   mounted () {
@@ -39,12 +39,10 @@ export default {
   methods: {
     get () {
       this.loading = true;
-      this.$http.get(api.getPlayListByWhere('全部', 'hot', this.offset, true, 6)).then((res) => {
+
+      this.$http.get(api.getPlayListByWhere('全部', 6 + this.offset)).then((res) => {
         var total = res.data.total;
-        var list = res.data.playlists;
-        for (let i = 0; i < list.length; i++) {
-          this.playList.push(list[i]);
-        }
+        this.playList = res.data.playlists;
         this.offset = this.offset + 6;
         if (this.offset > total) {
           this.offset = total;
@@ -73,7 +71,6 @@ export default {
 
 .wrapper{
 	width:100%;
-	height:28rem;
 	padding:0 10px;
 	overflow:auto;
 	-webkit-overflow-scrolling:touch;
@@ -93,7 +90,7 @@ export default {
 			padding:2px 5px;
 			top:0;
 			left:0;
-			text-algin:right;
+			text-align:right;
 			color:#fff;
 			background-color:rgba(0,0,0,.2);
 		}
@@ -103,10 +100,6 @@ export default {
 			a{
 				color:rgba(0,0,0,.87);
 			}
-		}
-		&-img{
-			width:8rem;
-			height:8rem;
 		}
 		&-img[lazy=loading]{
 			background:url('./default_cover.png') no-repeat;
