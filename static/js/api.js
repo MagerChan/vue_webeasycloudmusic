@@ -16,7 +16,7 @@ export default {
     return _baseUrl + '?type=url&id='+ id;
   },
   getPlayListDetail (id) {
-    return _baseUrl2 + '?type=playlist&id=' + id;
+    return _baseUrl + '/playlist/detail?id=' + id;
   },
   getMv (id) {
     return _baseUrl2 + '?type=mv&id=' + id;

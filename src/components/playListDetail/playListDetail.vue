@@ -35,7 +35,7 @@
   				<mu-circular-progress :size="40" class="center" v-if="isloading"/>
   				<mu-list :value="value" v-show="!isloading" @change="change">
   					<div v-for="(item,index) in list" @click="playAudio(item)">
-  						<mu-list-item :disableRipple="true" :title="item.name" :value="item.id" :describeText="item.ar[0].name">
+  						<mu-list-item :disableRipple="true" :title="item.name" :value="item.id" :describeText="item.artists[0].name">
   							<span slot="left" class="indexStyle">{{index + 1}}</span>
   						</mu-list-item>
   						<mu-divider inset/>
@@ -92,7 +92,7 @@ export default {
         if (opa > 0.5) {
           vm.fname = vm.name;
         } else {
-          vm.fname = '歌单啊';
+          vm.fname = '歌单';
         }
         vm.opacity = window.pageYOffset / 150;
       };
@@ -110,7 +110,7 @@ export default {
     get() {
       this.isloading = true;
       this.$http.get(api.getPlayListDetail(this.$route.params.id)).then((res) => {
-        this.list = res.data.playlist.tracks;
+        this.list = res.data.result.tracks;
         this.isloading = false;
       }).catch((error) => {
         console.log('加载歌单信息出错：' + error);
@@ -172,6 +172,22 @@ export default {
 .mu-appbar {
     background-color: transparent;
 }
+.bar-line {
+  display: block;
+  bottom: 0 ;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 0.05rem;
+  background: radial-gradient(#d3d3d3 -90%, transparent 100%);
+}
+.mu-paper-1 {
+  box-shadow: none;
+  > .mu-appbar-title {
+    text-align: center;
+    font-size: 14px;
+  }
+}
 .view{
 	width:100%;
 	margin-bottom:2.3rem;
@@ -207,7 +223,7 @@ export default {
 			}
 		}
 		.info-title{
-			width:7.5rem;
+			width:12rem;
 			float:left;
 			margin-left:1rem;
 			.title{
@@ -269,5 +285,12 @@ export default {
 		font-size:18px;
 		font-weight:bolder;
 	}
+}
+
+.mu-item-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1.5;
 }
 </style>
