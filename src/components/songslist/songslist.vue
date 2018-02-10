@@ -4,11 +4,11 @@
   		<div class="content">
   			<div class="title">全部歌单</div>
   			<mu-flexbox wrap="wrap" justify="space-around" class="box" :gutter="0">
-  				<mu-flexbox-item basis="40%" class="list-item" :key="item.id" v-for="item in playList">
+  				<mu-flexbox-item basis="40%" class="list-item-song" :key="item.id" v-for="item in playList">
   					<router-link :to="{name: 'playListDetail', params: {id: item.id, name: item.name, coverImg: item.coverImgUrl, creator: item.creator, count: item.playCount, desc: item.description}}">
   						<div class="list-bar">{{item.playCount | formatCount}}</div>
   						<img class="img-response" :src="item.coverImgUrl + '?para=300y300'" lazy="loading">
-  						<div class="list-name">{{item.name}}</div>
+  						<div class="list-name-song">{{item.name}}</div>
   					</router-link>
   				</mu-flexbox-item>
   			</mu-flexbox>
@@ -94,7 +94,7 @@ export default {
 			color:#fff;
 			background-color:rgba(0,0,0,.2);
 		}
-		&-item{
+		&-item-song{
 			position:relative;
 			margin:0 5px 5px 10px;
 			a{
@@ -105,7 +105,7 @@ export default {
 			background:url('./default_cover.png') no-repeat;
 			background-size:cover;
 		}
-		&-name{
+		&-name-song{
 			display:-webkit-box;
 			overflow:hidden;
 			text-overflow:ellipsis;

@@ -113,7 +113,7 @@ const store = new Vuex.Store({
       if (state.currentIndex > state.songList.length) {
         state.currentIndex = 1
       }
-        state.audio = state.songList[state.currentIndex - 1]
+      state.audio = state.songList[state.currentIndex - 1]
     },
     playPrev (state) { // 播放上一曲
       state.currentIndex--

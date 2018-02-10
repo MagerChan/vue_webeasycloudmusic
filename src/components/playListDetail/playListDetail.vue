@@ -124,8 +124,8 @@ export default {
       this.$store.commit('pause');
       var audio = {};
       audio.id = song.id;
-      audio.singer = song.ar[0].name;
-      audio.ablumPic = song.al.picUrl;
+      audio.singer = song.artists[0].name;
+      audio.ablumPic = song.album.picUrl;
       audio.name = song.name;
       this.$store.commit('addToList', audio);
       this.$store.dispatch('getSong', audio.id);
@@ -134,10 +134,10 @@ export default {
       let items = [];
       this.list.forEach((item) => {
         items.push({
-          albumPic: item.al.picUrl,
+          albumPic: item.album.picUrl,
           id: item.id,
-          name: item.al.name,
-          singer: item.ar[0].name
+          name: item.album.name,
+          singer: item.artists[0].name
         });
       });
       this.$store.commit('addToList', items);

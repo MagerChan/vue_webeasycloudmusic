@@ -18,14 +18,14 @@
                 <div class="stick"></div>
                 <div class="cd-wrapper" :class="{'cd-rotate':playing}">
                   <div class="cd-mask"></div>
-                  <img class="cd-img" :src="audio.albumPic + '?param=500y500'"/>
+                  <img class="cd-img" :src="audio.ablumPic + '?param=500y500'"/>
                 </div>
   						</div>
   					</mu-flexbox-item>
   					<mu-flexbox-item order="2" class="bottom-wrapper">
   						<div class="lyric-holder">
   							<div class="lrc-inner" style="transition:-webkit-transform 0.3s ease-out;transform-origin:0px 0px 0px" :style="{'transform':'translate3d(0px,'+lrcOffset+'px,0px)'}">
-  								<p v-for="(item,index) in afterLrc" :id="'line-'+index" :key="index">{item.txt}</p>
+  								<p v-for="(item,index) in afterLrc" :id="'line-'+index" :key="index">{{item.txt}}</p>
   							</div>
   						</div>
               <div class="process-bar">
@@ -41,7 +41,7 @@
               </div>
               <div class="control-bar">
                 <mu-icon-button class="bun d-mode" />
-                <mu-icon-button class="bun d-play" @click="playPrev" />
+                <mu-icon-button class="bun d-prev" @click="playPrev" />
                 <mu-icon-button class="bun d-play btn-big" @click="togglePlay" :class="{'d-pause':playing}" />
                 <mu-icon-button class="bun d-next" @click="playNext" />
                 <mu-icon-button class="bun d-list" @click="showList" />
@@ -99,7 +99,7 @@ export default {
       }
     },
     back () {
-      this.$route.go(-1);
+      this.$router.go(-1);
       this.$store.commit('toggleDetail');
     },
     changeTime (value) { // 改变播放时间事件
@@ -231,7 +231,7 @@ export default {
 		.play-singer{
 			line-height:1;
 			font-size:14px;
-			text-align:left;
+			text-align:center;
 			color:#a8a7a7;
 		}
 	}
@@ -347,11 +347,13 @@ export default {
         }
       }
       .time{
-        position:absolute;
-        top:54%;
-        color:#fff;
         font-size:12px;
-        opacity:.5;
+        color:#fff;
+        time{
+          position:absolute;
+          top:87%;
+          opacity:.5;
+        }
         #cur{
           left:0;
         }
@@ -361,6 +363,7 @@ export default {
       }
     }
     .control-bar{
+      text-align:center;
       .btn{
         width:2.6rem;
         height:2.6rem;
@@ -370,7 +373,7 @@ export default {
         background-size:cover;
       }
       .d-prev{
-        backgrond:url('./prev.png') no-repeat;
+        background:url('./prev.png') no-repeat;
         background-size:cover;
       }
       .d-play{

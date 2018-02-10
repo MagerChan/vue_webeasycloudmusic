@@ -6,7 +6,7 @@
 	  			<audio :src="audio.location" @timeupdate="updateTime" @canplay="canPlaySong" @error="loadError" @ended="next" id="audioPlay" />
 	  			<div class="cover" @click="showDetail">
 	  				<mu-circular-progress v-show="loading" :size="30" />
-	  				<img class="xmplogo" :src="audio.albumPic + '?param=100y100'" v-show="!loading" :alt="audio.name">
+	  				<img class="xmplogo" :src="audio.ablumPic + '?param=100y100'" v-show="!loading" :alt="audio.name">
 	  			</div>
 	  			<div class="info">
 	  				<div class="name xmpname">{{audio.name}}</div>
@@ -115,7 +115,10 @@ export default {
       'prBufferedTime',
       'tmpCurrentTime',
       'prCurrentTime'
-    ])
+    ]),
+    set: function(prCurrentTime) {
+      this.prCurrentTime = prCurrentTime;
+    }
   }
 };
 </script>
@@ -195,7 +198,7 @@ export default {
 			}
 			.pause{
 				background:url('./playbar_btn_pause.png') no-repeat!important;
-				backgrond-size:cover!important;
+				background-size:cover!important;
 			}
 			.next{
 				background:url('./playbar_btn_next.png') no-repeat!important;
