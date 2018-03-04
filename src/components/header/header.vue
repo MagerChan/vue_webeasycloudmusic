@@ -94,7 +94,6 @@ export default {
 .view{
   margin-bottom:2.3rem;
 }
-  
 
 
 </style>

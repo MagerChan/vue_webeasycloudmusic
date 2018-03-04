@@ -41,6 +41,7 @@ export default {
       }
     },
     play(index) {
+      console.log(index);
       this.$store.commit('setAudioIndex', index);
     },
     remove(index) {
@@ -59,10 +60,7 @@ export default {
 
 <style lang="less" rel="stylesheet/less">
 @import "../../assets/theme.less";
-html,body{
-	height:100%;
-	overflow:hidden;
-}
+
 .title-wrapper{
 	height:2rem;
 	line-height:2rem;

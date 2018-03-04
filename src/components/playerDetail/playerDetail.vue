@@ -109,9 +109,9 @@ export default {
     },
     loadLrc (id) {
       var self = this;
-      this.aterLrc = [{'txt': '正在加载中...'}];
+      this.afterLrc = [{'txt': '正在加载中...'}];
       if (!id) {
-        this.afterLrc = [{'text': '这里显示歌词哦！'}];
+        this.afterLrc = [{'txt': '这里显示歌词哦！'}];
         return;
       }
       this.$http.get(api.getLrc(id)).then((res) => {
@@ -138,7 +138,7 @@ export default {
         /* eslint-disable */
         var timeReg = /\[\d*:\d*((\.|:)\d*)*\]/g;
         /* eslint-enable */
-        // 思路： 1、把歌词进行处理以时间和歌词组成一个对象，当如afterLrc数组中
+        // 思路： 1、把歌词进行处理以时间和歌词组成一个对象，放入afterLrc数组中
         // 2、在computed方法中根据当前的时间进行匹配歌词，然后查找在数据中的位置计算offset值
         for (var i = 0; i < lyrics.length; i++) {
           var timeRegExpArr = lyrics[i].match(timeReg);

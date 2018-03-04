@@ -2,7 +2,7 @@
   <div class="playListDetail">
   	<div class="playList">
   		<div class="fixed-title" :style="{'background' : 'rgba(206,61,62,'+opacity+')'}" style="transition: opacity .1s;">
-  			<mu-appbar>
+  			<mu-appbar class="appbarclass">
   				<mu-icon-button icon="arrow_back" @click="back" slot="left"/>
   				<div class="play-title">
   					<div class="play-name"><span>{{fname}}</span></div>
@@ -132,15 +132,18 @@ export default {
     },
     playAll() {
       let items = [];
+      let itemid = 0;
       this.list.forEach((item) => {
+        if (!itemid) itemid = item.id;
         items.push({
           albumPic: item.album.picUrl,
           id: item.id,
-          name: item.album.name,
+          name: item.name,
           singer: item.artists[0].name
         });
       });
       this.$store.commit('addToList', items);
+      this.$store.dispatch('getSong', itemid);
     }
   },
   computed: {
@@ -169,7 +172,7 @@ export default {
 	left:0;
 	z-index:15;
 }
-.mu-appbar {
+.appbarclass {
     background-color: transparent;
 }
 .bar-line {

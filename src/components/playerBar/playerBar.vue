@@ -79,20 +79,20 @@ export default {
       }
     },
     next() {
-      this.toggleStatus();
+      // this.toggleStatus();
       this.$store.commit('playNext');
     },
     // 更新进度条事件
     updateTime() {
       var vm = this;
       var myaudio = document.getElementById('audioPlay');
-      var time = parseInt(myaudio.currentTime);
+      var time = parseInt(myaudio.currentTime); // 音乐当前播放位置
       // 防护在未加载完成时，切歌出现的错误
       // Failed to execute 'end' on 'TimeRanges':
       // 由onprogress 更改为 onsuspend事件。参考：http://www.cnblogs.com/tianma3798/p/6038908.html
-      myaudio.onsuspend = function () {
-        var timeRange = myaudio.buffered;
-        if (timeRange.length > 0 && myaudio.duration > 0) {
+      myaudio.onsuspend = function () { // 在媒介数据完全加载之前不论何种原因终止取回媒介数据时运行的脚本。
+        var timeRange = myaudio.buffered; // 音频已缓冲部分
+        if (timeRange.length > 0 && myaudio.duration > 0) {  // 音频的长度
           vm.$store.commit('updateBufferedTime', parseInt(myaudio.buffered.end(0)));
         }
       };
@@ -115,10 +115,7 @@ export default {
       'prBufferedTime',
       'tmpCurrentTime',
       'prCurrentTime'
-    ]),
-    set: function(prCurrentTime) {
-      this.prCurrentTime = prCurrentTime;
-    }
+    ])
   }
 };
 </script>

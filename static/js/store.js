@@ -61,6 +61,7 @@ const store = new Vuex.Store({
     setAudioIndex (state, index) {
       state.audio = state.songList[index]
       state.currentIndex = index + 1
+      store.dispatch('getSong', state.audio.id)
     },
     removeAudio (state, index) {
       state.songList.splice(index, 1)
@@ -81,7 +82,7 @@ const store = new Vuex.Store({
         state.playing = false
       }
     },
-    setChange (state, flay){
+    setChange (state, flag){
       state.change = flag
     },
     setLocation (state, location) {
@@ -114,6 +115,7 @@ const store = new Vuex.Store({
         state.currentIndex = 1
       }
       state.audio = state.songList[state.currentIndex - 1]
+      store.dispatch('getSong', state.audio.id)
     },
     playPrev (state) { // 播放上一曲
       state.currentIndex--
@@ -121,21 +123,23 @@ const store = new Vuex.Store({
         state.currentIndex = state.songList.length
       }
       state.audio = state.songList[state.currentIndex - 1]
+      store.dispatch('getSong', state.audio.id)
     },
     addToList (state, songs){
-      var items = Array.prototype.concat.call(songs);
+      var items = Array.prototype.concat.call(songs); //将对象合并为数组
       items.forEach(item => {
         var flag = false;
-          state.songList.forEach(function (element, index) { //检测歌曲重复
-            if (element.id === item.id) {
-              flag = true;
-              state.currentIndex = index + 1;
-            }
-          });
-          if (!flag) {
-            state.songList.push(item);
-            state.currentIndex = state.songList.length;
+        state.songList.forEach(function (element, index) { //检测歌曲重复
+          if (element.id === item.id) {
+            flag = true;
+            state.currentIndex = index + 1;
           }
+        });
+        if (!flag) {
+          state.songList.push(item);
+          state.currentIndex = (items.length > 1) ? 1 : state.songList.length;
+          // state.currentIndex = state.songList.length;
+        }
       });
     },
     setLrc (state, lrc) {
