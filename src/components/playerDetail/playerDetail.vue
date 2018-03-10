@@ -18,7 +18,7 @@
                 <div class="stick"></div>
                 <div class="cd-wrapper" :class="{'cd-rotate':playing}">
                   <div class="cd-mask"></div>
-                  <img class="cd-img" :src="audio.ablumPic + '?param=500y500'"/>
+                  <img class="cd-img" :src="audio.albumPic + '?param=500y500'"/>
                 </div>
   						</div>
   					</mu-flexbox-item>
@@ -31,7 +31,8 @@
               <div class="process-bar">
                 <div class="pro">
                   <div class="pro-wrap">
-                    <mu-slider class="song-slider" @changer="changeTime" v-model="prCurrentTime"/>
+                    <!-- <mu-slider class="song-slider" @changer="changeTime" v-model="prCurrentTime"/> -->
+                    <mu-slider class="song-slider" @change="changeTime" :value="prCurrentTime"/>
                   </div>
                   <div class="time">
                     <time id="cur">{{currentTime | time}}</time>
@@ -74,10 +75,10 @@ export default {
   components: {
     BottomSheet
   },
-  beforeRouterEnter: (to, from, next) => {
+  beforeRouteEnter: (to, from, next) => {
     // 这里判断是否重复打开的同一个歌曲页面
     next(vm => {
-      if (parseInt(to.params.id) !== parseInt(vm.audio.id)) {
+      if (parseInt(to.params.id) === parseInt(vm.audio.id)) {
         console.log('vm: id' + vm.audio.id);
         vm.loadLrc(vm.audio.id);
       }
@@ -182,11 +183,14 @@ export default {
       if (this.afterLrc) {
         // 1、根据时间获得歌词
         var current = Math.round(this.currentTime);
+
+        if (current === 0) this.lrcIndex = 0;
+
         // 2、根据时间得到歌词
         for (var i = 0; i < this.afterLrc.length; i++) {
           if (this.afterLrc[i].time === current) this.lrcIndex = i;
         }
-        return -(this.lrcIndex) * 58;
+        return -(this.lrcIndex) * 42;
       }
     }
   },
@@ -300,8 +304,8 @@ export default {
     }
   }
   .cd-rotate{
-    -webkit-animation:rotating 10s linear .3s infinite;
-    animation:ratating 10s linear .3s infinite;
+    -webkit-animation: rotating 10s linear .3s infinite;
+    animation:rotating 10s linear .3s infinite;
   }
   .cd-img{
     border-radius:50%;
@@ -313,7 +317,7 @@ export default {
     align-items:flex-end;
     .lyric-holder{
       position:relative;
-      height:3rem;
+      height:5rem;
       overflow:hidden;
       margin-top:.6rem;
       .lrc-inner{
@@ -355,10 +359,10 @@ export default {
           opacity:.5;
         }
         #cur{
-          left:0;
+          left:.5rem;
         }
         #total{
-          right:0;
+          right:.5rem;
         }
       }
     }
@@ -430,6 +434,33 @@ export default {
   }
 }
 
+/*跑马灯样式*/
+.marquee {
+  position: relative;
+  overflow: hidden;
+  height: 30px;
+}
+.marquee > span {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  width: 200%;
+  height: 30px;
+  -webkit-animation: marquee 10s linear infinite;
+  animation: marquee 10s linear infinite;
+}
+
+/* 定义一个走马灯动画 */
+@-webkit-keyframes marquee {
+  0% { left: 0; }
+  100% { left: -100%; }
+}
+@keyframes marquee {
+  0% { left:0; }
+  100% { left: -100%; }
+}
+
+/*cd 旋转动画*/
 @-webkit-keyframes rotating{
   0% { -webkit-transform:rotate(0deg); }
   100% { -webkit-transform:rotate(360deg); }
@@ -437,5 +468,12 @@ export default {
 @keyframes rotating {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
+}
+
+.fade-enter-active{
+  transition:all .4s;
+}
+.fade-enter{
+  transform:translate(100%,0);
 }
 </style>

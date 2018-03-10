@@ -35,6 +35,7 @@ const store = new Vuex.Store({
     durationTime: state => state.durationTime,
     currentIndex: state => state.currentIndex,
     bufferedTime: state => state.bufferedTime,
+    tmpCurrentTime: state => state.tmpCurrentTime,
     songList: state => state.songList,
     change: state => state.change,
     currentTime: state => state.currentTime,
@@ -80,6 +81,7 @@ const store = new Vuex.Store({
           'album': ''
         }
         state.playing = false
+        state.loading = false
       }
     },
     setChange (state, flag){

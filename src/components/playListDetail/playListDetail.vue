@@ -125,7 +125,7 @@ export default {
       var audio = {};
       audio.id = song.id;
       audio.singer = song.artists[0].name;
-      audio.ablumPic = song.album.picUrl;
+      audio.albumPic = song.album.picUrl;
       audio.name = song.name;
       this.$store.commit('addToList', audio);
       this.$store.dispatch('getSong', audio.id);
